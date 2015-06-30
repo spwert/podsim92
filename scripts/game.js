@@ -29,103 +29,102 @@ MYAPP.oldCursors = {
 
 // Phaser.State functions (only one state for now)
 
-MYAPP.preloadGame = function () {
+MYAPP.gameState = {
+    preload : function () {
 
-    MYAPP.game.load.image('space', 'assets/deep-space.jpg');
-    MYAPP.game.load.image('ship', 'assets/ship.png');
+        MYAPP.game.load.image('space', 'assets/deep-space.jpg');
+        MYAPP.game.load.image('ship', 'assets/ship.png');
 
-};
+    },
+    create : function () {
 
-MYAPP.createGame = function () {
+        // Speeds things up a little
+        MYAPP.game.renderer.clearBeforeRender = false;
 
-    // Speeds things up a little
-    MYAPP.game.renderer.clearBeforeRender = false;
+        // Simple physics
+        MYAPP.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    // Simple physics
-    MYAPP.game.physics.startSystem(Phaser.Physics.ARCADE);
+        // Add background, tiling sprite
+        MYAPP.game.add.tileSprite(0, 0, MYAPP.game.width, MYAPP.game.height, 'space');
 
-    // Add background, tiling sprite
-    MYAPP.game.add.tileSprite(0, 0, MYAPP.game.width, MYAPP.game.height, 'space');
+        // Player sprite
+        MYAPP.playerDolf = MYAPP.game.add.sprite(300, 300, 'ship');
+        MYAPP.dolphinifySprite(MYAPP.playerDolf);
 
-    // Player sprite
-    MYAPP.playerDolf = MYAPP.game.add.sprite(300, 300, 'ship');
-    MYAPP.dolphinifySprite(MYAPP.playerDolf);
+        // Input handling
+        MYAPP.cursors = MYAPP.game.input.keyboard.createCursorKeys();
 
-    // Input handling
-    MYAPP.cursors = MYAPP.game.input.keyboard.createCursorKeys();
+    },
+    update : function () {
 
-};
+        // Handle player's keyboard input
 
-MYAPP.updateGame = function () {
+        var newCursors = {
+            up : MYAPP.cursors.up.isDown,
+            down : MYAPP.cursors.down.isDown,
+            left : MYAPP.cursors.left.isDown,
+            right : MYAPP.cursors.right.isDown
+        };
 
-    // Handle player's keyboard input
-
-    var newCursors = {
-        up : MYAPP.cursors.up.isDown,
-        down : MYAPP.cursors.down.isDown,
-        left : MYAPP.cursors.left.isDown,
-        right : MYAPP.cursors.right.isDown
-    };
-
-    if (!MYAPP.oldCursors.compare(newCursors))
-    {
-        var playerCommand = Object.create(MYAPP.DDirCommand.prototype);
-        if (newCursors.up)
+        if (!MYAPP.oldCursors.compare(newCursors))
         {
-            if (newCursors.left)
+            var playerCommand = Object.create(MYAPP.DDirCommand.prototype);
+            if (newCursors.up)
             {
-                playerCommand.dir = "UL";
+                if (newCursors.left)
+                {
+                    playerCommand.dir = "UL";
+                }
+                else if (newCursors.right)
+                {
+                    playerCommand.dir = "UR";
+                }
+                else
+                {
+                    playerCommand.dir = "U";
+                }
+            }
+            else if (newCursors.down)
+            {
+                if (newCursors.left)
+                {
+                    playerCommand.dir = "DL";
+                }
+                else if (newCursors.right)
+                {
+                    playerCommand.dir = "DR";
+                }
+                else
+                {
+                    playerCommand.dir = "D";
+                }
+            }
+            else if (newCursors.left)
+            {
+                playerCommand.dir = "L";
             }
             else if (newCursors.right)
             {
-                playerCommand.dir = "UR";
+                playerCommand.dir = "R";
             }
             else
             {
-                playerCommand.dir = "U";
+                playerCommand.dir = "";
             }
-        }
-        else if (newCursors.down)
-        {
-            if (newCursors.left)
-            {
-                playerCommand.dir = "DL";
-            }
-            else if (newCursors.right)
-            {
-                playerCommand.dir = "DR";
-            }
-            else
-            {
-                playerCommand.dir = "D";
-            }
-        }
-        else if (newCursors.left)
-        {
-            playerCommand.dir = "L";
-        }
-        else if (newCursors.right)
-        {
-            playerCommand.dir = "R";
-        }
-        else
-        {
-            playerCommand.dir = "";
+
+            MYAPP.playerDolf.commandQueue.push(playerCommand);
+
+            MYAPP.oldCursors.set(newCursors);
         }
 
-        MYAPP.playerDolf.commandQueue.push(playerCommand);
 
-        MYAPP.oldCursors.set(newCursors);
+    },
+    render : function () {
+
+        // TODO
+
     }
-
-
-};
-
-MYAPP.renderGame = function () {
-
-    // TODO
-
-};
+}
 
 MYAPP.screenWrap = function (sprite) {
 
@@ -155,10 +154,5 @@ MYAPP.game = new Phaser.Game(
         600,
         Phaser.AUTO,
         'phaser-example',
-        { 
-            preload : MYAPP.preloadGame,
-            create  : MYAPP.createGame,
-            update  : MYAPP.updateGame,
-            render  : MYAPP.renderGame
-        }
+        MYAPP.gameState
     );
