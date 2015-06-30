@@ -1,4 +1,4 @@
-var MYAPP = {};
+var MYAPP = MYAPP || {};
 
 // Constants
 MYAPP.DOLF_ACC = 120;
@@ -6,7 +6,7 @@ MYAPP.DOLF_DRAG = 100;
 MYAPP.DOLF_MAX_VEL = 200;
 
 // Global variables
-// TODO: global variables are bad. get rid of them.
+// TODO: global state is bad. get rid of it.
 MYAPP.oldCursors = {
     up : false,
     down : false,
