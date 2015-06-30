@@ -45,14 +45,20 @@ MYAPP.gameState = {
         MYAPP.game.physics.startSystem(Phaser.Physics.ARCADE);
 
         // Add background, tiling sprite
-        MYAPP.game.add.tileSprite(0, 0, MYAPP.game.width, MYAPP.game.height, 'space');
+        MYAPP.game.add.tileSprite(0, 0, 1024, 1024, 'space');
+
+        // Setup world
+        MYAPP.game.world.setBounds(0, 0, 1024, 1024);
 
         // Player sprite
-        MYAPP.playerDolf = MYAPP.game.add.sprite(300, 300, 'ship');
+        MYAPP.playerDolf = MYAPP.game.add.sprite(MYAPP.game.world.centerX, MYAPP.game.world.centerY, 'ship');
         MYAPP.dolphinifySprite(MYAPP.playerDolf);
 
         // Input handling
         MYAPP.cursors = MYAPP.game.input.keyboard.createCursorKeys();
+
+        // Camera
+        MYAPP.game.camera.follow(MYAPP.playerDolf);
 
     },
     update : function () {
@@ -121,7 +127,8 @@ MYAPP.gameState = {
     },
     render : function () {
 
-        // TODO
+        MYAPP.game.debug.cameraInfo(MYAPP.game.camera, 32, 32);
+        MYAPP.game.debug.spriteCoords(MYAPP.playerDolf, 32, 500);
 
     }
 }

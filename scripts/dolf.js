@@ -6,7 +6,6 @@ MYAPP.updateDolphin = function () {
         this.commandQueue[i].execute(this);
     }
     this.commandQueue = [];
-    MYAPP.screenWrap(this);
 };
 
 // turns a sprite into a dolphin
