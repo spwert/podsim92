@@ -18,6 +18,8 @@ MYAPP.dolphinifySprite = function (sprite) {
     sprite.body.maxVelocity.set(MYAPP.DOLF_MAX_VEL);
     // add game loop functions
     sprite.update = MYAPP.updateDolphin;
+    // limit sprite to world bounds
+    sprite.body.collideWorldBounds = true;
     // add command queue
     sprite.commandQueue = [];
 };
