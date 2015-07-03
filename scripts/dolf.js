@@ -12,6 +12,8 @@ MYAPP.updateDolphin = function () {
 MYAPP.dolphinifySprite = function (sprite) {
     // set rotation point
     sprite.anchor.set(0.5);
+    // sprite is backwards! shit!
+    sprite.scale.x *= -1;
     // setup physics
     MYAPP.game.physics.enable(sprite, Phaser.Physics.ARCADE);
     sprite.body.totalDrag = MYAPP.DOLF_DRAG;

@@ -34,6 +34,7 @@ MYAPP.gameState = {
 
         MYAPP.game.load.image('space', 'assets/deep-space.jpg');
         MYAPP.game.load.image('ship', 'assets/ship.png');
+        MYAPP.game.load.spritesheet('horiz', 'assets/horiz.png', 64, 27, 6, 0, 1);
 
     },
     create : function () {
@@ -51,7 +52,12 @@ MYAPP.gameState = {
         MYAPP.game.world.setBounds(0, 0, 1024, 1024);
 
         // Player sprite
-        MYAPP.playerDolf = MYAPP.game.add.sprite(MYAPP.game.world.centerX, MYAPP.game.world.centerY, 'ship');
+        MYAPP.playerDolf = MYAPP.game.add.sprite(
+                MYAPP.game.world.centerX, 
+                MYAPP.game.world.centerY, 
+                'horiz');
+        MYAPP.playerDolf.animations.add('swim');
+        MYAPP.playerDolf.animations.play('swim', 5, true);
         MYAPP.dolphinifySprite(MYAPP.playerDolf);
 
         // Input handling
